@@ -22,7 +22,7 @@ export default function SearchBox({updateInfo}) {
         tempMin: jsonResponse.main.temp_min,
         tempMax: jsonResponse.main.temp_max,
         humidity: jsonResponse.main.humidity,
-        feelsLike: jsonResponse.main.feels_like,
+        feelslike: jsonResponse.main.feels_like,
         weather: jsonResponse.weather[0].description
        }
        console.log(result);
@@ -57,7 +57,6 @@ export default function SearchBox({updateInfo}) {
         <div className="SearchBox">
             <form onSubmit={handleSubmit}>
                 <TextField id="city" label="City Name" variant="outlined" required value={city} onChange={handleChange}/>
-                < br></br><br></br>
                 <Button variant="contained" type='submit'>
                         Search
                 </Button>

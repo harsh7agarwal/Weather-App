@@ -1,4 +1,117 @@
 .SearchBox {
-    text-align : center;
-    margin-bottom: 25px;
+    text-align: center;
+    margin-bottom: 35px;
+    padding: 25px;
+    position: relative;
+    z-index: 1;
+}
+
+.SearchBox form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 25px;
+    max-width: 450px;
+    margin: 0 auto;
+}
+
+.SearchBox .MuiTextField-root {
+    width: 100%;
+    background-color: rgba(255, 255, 255, 0.98);
+    border-radius: 12px;
+    transition: all 0.3s ease;
+}
+
+.SearchBox .MuiTextField-root:hover {
+    background-color: rgba(255, 255, 255, 1);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+}
+
+.SearchBox .MuiTextField-root .MuiOutlinedInput-root {
+    border-radius: 12px;
+    font-size: 16px;
+}
+
+.SearchBox .MuiTextField-root .MuiOutlinedInput-root:hover .MuiOutlinedInput-notchedOutline {
+    border-color: #667eea;
+    border-width: 2px;
+}
+
+.SearchBox .MuiTextField-root .MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline {
+    border-color: #667eea;
+    border-width: 2px;
+}
+
+.SearchBox .MuiButton-root {
+    padding: 14px 40px;
+    font-size: 17px;
+    font-weight: 700;
+    text-transform: none;
+    border-radius: 12px;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    box-shadow: 0 6px 20px rgba(102, 126, 234, 0.4),
+                0 2px 8px rgba(0, 0, 0, 0.15);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    position: relative;
+    overflow: hidden;
+}
+
+.SearchBox .MuiButton-root::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+    transition: left 0.5s;
+}
+
+.SearchBox .MuiButton-root:hover::before {
+    left: 100%;
+}
+
+.SearchBox .MuiButton-root:hover {
+    transform: translateY(-3px) scale(1.02);
+    box-shadow: 0 10px 30px rgba(102, 126, 234, 0.5),
+                0 4px 12px rgba(0, 0, 0, 0.2);
+}
+
+.SearchBox .MuiButton-root:active {
+    transform: translateY(-1px) scale(0.98);
+}
+
+.SearchBox p {
+    margin-top: 15px;
+    font-weight: 600;
+    font-size: 15px;
+    padding: 10px 20px;
+    background: rgba(255, 0, 0, 0.1);
+    border-radius: 8px;
+    border: 1px solid rgba(255, 0, 0, 0.3);
+    animation: shake 0.5s ease-in-out;
+    color: #ff4444;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+}
+
+@keyframes shake {
+    0%, 100% { transform: translateX(0); }
+    25% { transform: translateX(-10px); }
+    75% { transform: translateX(10px); }
+}
+
+@media (max-width: 600px) {
+    .SearchBox {
+        padding: 15px;
+    }
+    
+    .SearchBox form {
+        max-width: 100%;
+        gap: 20px;
+    }
+    
+    .SearchBox .MuiButton-root {
+        padding: 12px 32px;
+        font-size: 16px;
+    }
 }
