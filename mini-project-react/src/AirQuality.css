@@ -1,113 +1,233 @@
 .air-quality-app {
-    max-width: 400px;
-    margin: 30px auto;
+    max-width: 450px;
+    width: 100%;
+    margin: 0;
     padding: 0;
     font-family: 'Roboto', Arial, sans-serif;
-    background: #f5f5f5;
-    border-radius: 20px;
+    background: linear-gradient(145deg, rgba(255, 255, 255, 0.1) 0%, rgba(255, 255, 255, 0.05) 100%);
+    backdrop-filter: blur(30px);
+    border-radius: 32px;
     overflow: hidden;
-    box-shadow: 0 4px 16px rgba(0,0,0,0.1);
+    box-shadow: 
+        0 25px 80px rgba(0, 0, 0, 0.5),
+        0 0 0 1px rgba(255, 255, 255, 0.1) inset,
+        0 0 100px rgba(255, 119, 198, 0.3);
+    border: 2px solid rgba(255, 255, 255, 0.2);
+    z-index: 1;
+    position: relative;
+    animation: slideUp 0.8s cubic-bezier(0.4, 0, 0.2, 1) 0.2s both;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.air-quality-app:hover {
+    transform: translateY(-5px);
+    box-shadow: 
+        0 30px 100px rgba(0, 0, 0, 0.6),
+        0 0 0 1px rgba(255, 255, 255, 0.2) inset,
+        0 0 150px rgba(255, 119, 198, 0.5);
+}
+
+.air-quality-app::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    right: -50%;
+    width: 200%;
+    height: 200%;
+    background: radial-gradient(circle, rgba(255, 119, 198, 0.15) 0%, transparent 70%);
+    animation: rotate 30s linear infinite reverse;
+    pointer-events: none;
 }
 
 .app-header {
-    background: #2196F3;
+    background: linear-gradient(135deg, #FF77C6 0%, #7877C6 50%, #78DBFF 100%);
+    background-size: 200% 200%;
+    animation: gradientShift 8s ease infinite;
     color: white;
-    padding: 24px 20px;
+    padding: 28px 24px;
     text-align: center;
     margin-bottom: 0;
+    position: relative;
+    overflow: hidden;
+}
+
+.app-header::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+    animation: shine 3s infinite;
+}
+
+@keyframes shine {
+    0% {
+        left: -100%;
+    }
+    100% {
+        left: 100%;
+    }
 }
 
 .app-header h1 {
     margin: 0;
-    font-size: 24px;
-    font-weight: 500;
+    font-size: 26px;
+    font-weight: 800;
+    text-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+    letter-spacing: 0.5px;
+    position: relative;
+    z-index: 1;
 }
 
 .search-section {
-    padding: 20px;
-    background: white;
+    padding: 24px;
+    background: rgba(255, 255, 255, 0.05);
     margin-bottom: 0;
+    backdrop-filter: blur(10px);
 }
 
 .search-section form {
     display: flex;
-    gap: 10px;
+    gap: 12px;
 }
 
 .city-input {
     flex: 1;
-    padding: 14px;
-    border: 1px solid #ddd;
-    border-radius: 8px;
+    padding: 16px 18px;
+    border: 2px solid rgba(255, 255, 255, 0.2);
+    border-radius: 12px;
     font-size: 16px;
-    background: white;
+    background: rgba(255, 255, 255, 0.1);
+    color: white;
+    backdrop-filter: blur(10px);
+    transition: all 0.3s ease;
+}
+
+.city-input::placeholder {
+    color: rgba(255, 255, 255, 0.6);
+}
+
+.city-input:focus {
+    outline: none;
+    border-color: #78DBFF;
+    background: rgba(255, 255, 255, 0.15);
+    box-shadow: 0 0 20px rgba(120, 219, 255, 0.3);
 }
 
 .search-btn {
-    padding: 14px 24px;
-    background: #2196F3;
+    padding: 16px 32px;
+    background: linear-gradient(135deg, #78DBFF 0%, #7877C6 100%);
     color: white;
     border: none;
-    border-radius: 8px;
+    border-radius: 12px;
     font-size: 16px;
+    font-weight: 700;
     cursor: pointer;
-    font-weight: 500;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 15px rgba(120, 219, 255, 0.4);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.search-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 25px rgba(120, 219, 255, 0.6);
+    background: linear-gradient(135deg, #7877C6 0%, #78DBFF 100%);
 }
 
 .search-btn:active {
-    background: #1976D2;
+    transform: translateY(0);
 }
 
 .aqi-card {
-    background: white;
-    padding: 24px;
+    background: rgba(255, 255, 255, 0.05);
+    padding: 28px;
     margin-top: 0;
+    backdrop-filter: blur(10px);
 }
 
 .aqi-header {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 16px;
+    margin-bottom: 20px;
 }
 
 .aqi-header h2 {
     margin: 0;
-    font-size: 22px;
-    color: #333;
+    font-size: 24px;
+    color: white;
+    font-weight: 700;
+    text-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
 }
 
 .aqi-value {
-    width: 60px;
-    height: 60px;
+    width: 80px;
+    height: 80px;
     border-radius: 50%;
     display: flex;
     align-items: center;
     justify-content: center;
     color: white;
-    font-size: 24px;
-    font-weight: bold;
+    font-size: 28px;
+    font-weight: 900;
+    box-shadow: 
+        0 8px 30px rgba(0, 0, 0, 0.4),
+        0 0 0 4px rgba(255, 255, 255, 0.1) inset;
+    animation: pulseGlow 2s ease infinite;
+    text-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
+}
+
+@keyframes pulseGlow {
+    0%, 100% {
+        box-shadow: 
+            0 8px 30px rgba(0, 0, 0, 0.4),
+            0 0 0 4px rgba(255, 255, 255, 0.1) inset,
+            0 0 20px currentColor;
+    }
+    50% {
+        box-shadow: 
+            0 8px 30px rgba(0, 0, 0, 0.4),
+            0 0 0 4px rgba(255, 255, 255, 0.1) inset,
+            0 0 40px currentColor;
+    }
 }
 
 .aqi-status {
-    font-size: 18px;
-    font-weight: 500;
-    margin-bottom: 20px;
+    font-size: 20px;
+    font-weight: 700;
+    margin-bottom: 24px;
     text-align: center;
+    text-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+    padding: 12px;
+    border-radius: 12px;
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(10px);
 }
 
 .pollution-details {
-    border-top: 1px solid #eee;
-    border-bottom: 1px solid #eee;
-    padding: 16px 0;
-    margin-bottom: 16px;
+    border-top: 2px solid rgba(255, 255, 255, 0.2);
+    border-bottom: 2px solid rgba(255, 255, 255, 0.2);
+    padding: 20px 0;
+    margin-bottom: 20px;
 }
 
 .detail-item {
     display: flex;
     justify-content: space-between;
-    margin-bottom: 12px;
-    font-size: 16px;
+    margin-bottom: 16px;
+    font-size: 17px;
+    padding: 12px;
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 10px;
+    transition: all 0.3s ease;
+}
+
+.detail-item:hover {
+    background: rgba(255, 255, 255, 0.1);
+    transform: translateX(5px);
 }
 
 .detail-item:last-child {
@@ -115,20 +235,77 @@
 }
 
 .detail-item span:first-child {
-    color: #666;
+    color: rgba(255, 255, 255, 0.8);
+    font-weight: 500;
 }
 
 .detail-item .value {
-    font-weight: 500;
-    color: #333;
+    font-weight: 700;
+    color: white;
+    text-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
 }
 
 .health-message {
-    background: #E3F2FD;
-    padding: 16px;
-    border-radius: 8px;
-    font-size: 14px;
-    color: #1976D2;
-    line-height: 1.5;
+    background: linear-gradient(135deg, rgba(120, 219, 255, 0.2) 0%, rgba(255, 119, 198, 0.2) 100%);
+    padding: 20px;
+    border-radius: 12px;
+    font-size: 15px;
+    color: white;
+    line-height: 1.6;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    text-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+    font-weight: 500;
 }
 
+@keyframes slideUp {
+    from {
+        opacity: 0;
+        transform: translateY(40px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes rotate {
+    from {
+        transform: rotate(0deg);
+    }
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+@keyframes gradientShift {
+    0% {
+        background-position: 0% 50%;
+    }
+    50% {
+        background-position: 100% 50%;
+    }
+    100% {
+        background-position: 0% 50%;
+    }
+}
+
+@media (max-width: 600px) {
+    .air-quality-app {
+        max-width: 100%;
+        margin: 0 15px;
+    }
+    
+    .app-header h1 {
+        font-size: 22px;
+    }
+    
+    .aqi-header h2 {
+        font-size: 20px;
+    }
+    
+    .aqi-value {
+        width: 70px;
+        height: 70px;
+        font-size: 24px;
+    }
+}

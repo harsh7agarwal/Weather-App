@@ -9,32 +9,73 @@ export default function AirQuality() {
         e.preventDefault();
         if (!city.trim()) return;
 
-        // Mock AQI data for demo (you can integrate with real API later)
-        const mockAqiData = {
-            city: city,
-            aqi: Math.floor(Math.random() * 300) + 50, // Random AQI between 50-350
-            pm25: Math.floor(Math.random() * 100) + 10,
-            pm10: Math.floor(Math.random() * 150) + 20,
-            status: 'Moderate'
-        };
+        const API_KEY = "de0ab7df4fbbd6bd848c22f5bf9d88be";
+        
+        try {
+            // First get coordinates for the city
+            const geoUrl = `https://api.openweathermap.org/geo/1.0/direct?q=${city}&limit=1&appid=${API_KEY}`;
+            const geoResponse = await fetch(geoUrl);
+            const geoData = await geoResponse.json();
 
-        // Determine status based on AQI
-        if (mockAqiData.aqi <= 50) {
-            mockAqiData.status = 'Good';
-        } else if (mockAqiData.aqi <= 100) {
-            mockAqiData.status = 'Moderate';
-        } else if (mockAqiData.aqi <= 150) {
-            mockAqiData.status = 'Unhealthy for Sensitive Groups';
-        } else if (mockAqiData.aqi <= 200) {
-            mockAqiData.status = 'Unhealthy';
-        } else if (mockAqiData.aqi <= 300) {
-            mockAqiData.status = 'Very Unhealthy';
-        } else {
-            mockAqiData.status = 'Hazardous';
+            if (geoData.length === 0) {
+                alert('City not found!');
+                return;
+            }
+
+            const { lat, lon } = geoData[0];
+
+            // Get air pollution data using coordinates
+            const airPollutionUrl = `https://api.openweathermap.org/data/2.5/air_pollution?lat=${lat}&lon=${lon}&appid=${API_KEY}`;
+            const airResponse = await fetch(airPollutionUrl);
+            const airData = await airResponse.json();
+
+            if (airData.cod) {
+                throw new Error('API Error');
+            }
+
+            const aqi = airData.list[0].main.aqi; // 1-5 scale
+            const components = airData.list[0].components;
+
+            // Convert AQI from 1-5 scale to 0-500 scale (US AQI)
+            const aqiValue = convertToUSAQI(aqi, components);
+            const status = getStatusFromAQI(aqiValue);
+
+            const aqiData = {
+                city: city,
+                aqi: aqiValue,
+                pm25: Math.round(components.pm2_5),
+                pm10: Math.round(components.pm10),
+                status: status
+            };
+
+            setAqiData(aqiData);
+            setCity('');
+        } catch (err) {
+            alert('Error fetching air quality data. Please try again.');
+            console.error(err);
         }
+    };
 
-        setAqiData(mockAqiData);
-        setCity('');
+    const convertToUSAQI = (aqi, components) => {
+        // OpenWeatherMap uses 1-5 scale, convert to US AQI (0-500)
+        // Using PM2.5 as primary indicator
+        const pm25 = components.pm2_5;
+        
+        if (pm25 <= 12) return Math.round((pm25 / 12) * 50);
+        if (pm25 <= 35.4) return Math.round(50 + ((pm25 - 12) / 23.4) * 50);
+        if (pm25 <= 55.4) return Math.round(100 + ((pm25 - 35.4) / 20) * 50);
+        if (pm25 <= 150.4) return Math.round(150 + ((pm25 - 55.4) / 95) * 50);
+        if (pm25 <= 250.4) return Math.round(200 + ((pm25 - 150.4) / 100) * 100);
+        return Math.round(300 + ((pm25 - 250.4) / 124.6) * 100);
+    };
+
+    const getStatusFromAQI = (aqi) => {
+        if (aqi <= 50) return 'Good';
+        if (aqi <= 100) return 'Moderate';
+        if (aqi <= 150) return 'Unhealthy for Sensitive Groups';
+        if (aqi <= 200) return 'Unhealthy';
+        if (aqi <= 300) return 'Very Unhealthy';
+        return 'Hazardous';
     };
 
     const getAqiColor = (aqi) => {
